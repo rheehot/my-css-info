@@ -124,3 +124,69 @@
 > ![image](https://user-images.githubusercontent.com/46839654/78561892-6b894b80-7853-11ea-9da6-6d036479ff9f.png)
 
 크로스 브라우징을 해야 한다면 grid 대신 flex로 사용하는 것이 정신건강에 좋다.
+
+---
+
+# 드롭다운 메뉴
+
+profile_image를 클릭하거나 마우스를 갖다대면 메뉴가 나오게 만들어야하는 경우가 생긴다.
+
+![optimize](https://user-images.githubusercontent.com/46839654/79357447-00d6bf00-7f7b-11ea-8caf-d33712ffffde.gif)
+
+JS를 이용해서 만들 수도 있는데, pure css를 사용 해보겠다.
+
+HTML은 다음과 같고
+
+    <body>
+        <button>
+            <img src="./sample.jpg" />
+        </button>
+        <div class="hover-box">
+            Larry Jung
+        </div>
+    </body>
+
+CSS는 다음과 같다.
+
+    @keyframes anime {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hover-box {
+        display: none;
+        opacity: 0;
+        width: 100px;
+        height: 200px;
+        background-color: #bbb;
+        animation: anime 0.5s forwards;
+    }
+
+    button {
+        all: unset;
+        cursor: pointer;
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    button:focus + .hover-box { ❗ 클릭은 button:focus, hover는 button:hover ❗
+        display: flex;
+    }
+
+주의할 점은 display: none >>> flex or block로 변경하게 되면
+
+opacity나 transform 효과가 사라지기 때문에
+
+effect를 줘야하는 element에 animation을 줘야한다.
+
+✅ 기본값으로 `display: on, opacity: 0`인 경우에는 transition만 줘도 된다.
