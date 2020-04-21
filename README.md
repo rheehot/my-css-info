@@ -135,7 +135,7 @@ profile_image를 클릭하거나 마우스를 갖다대면 메뉴가 나오게 �
 
 JS를 이용해서 만들 수도 있는데, pure css를 사용 해보겠다.
 
-HTML은 다음과 같고
+### HTML
 
     <body>
         <button>
@@ -146,7 +146,7 @@ HTML은 다음과 같고
         </div>
     </body>
 
-CSS는 다음과 같다.
+### CSS
 
     @keyframes anime {
         0% {
@@ -190,3 +190,67 @@ opacity나 transform 효과가 사라지기 때문에
 effect를 줘야하는 element에 animation을 줘야한다.
 
 ✅ 기본값으로 `display: on, opacity: 0`인 경우에는 transition만 줘도 된다.
+
+❗❗ **하지만** 이 상태로 끝나면 클릭 되었을 때, 보여진 item을 클릭할 수 없다.
+
+이번에는 opacity가 증가하면서 내려오는 방식말고, 더 인터랙티브하게 바꿔보았다.
+
+![ezgif com-optimize](https://user-images.githubusercontent.com/46839654/79847107-399eea00-83fa-11ea-8103-9bef14991805.gif)
+
+### HTML
+
+    <button>
+      <img src="./sample.jpg" />
+    </button>
+    <div class="hover-box">
+      Larry Jung
+      <br />
+      1
+      <br />
+      <button onclick="console.log('work')">click</button>
+      <br />
+      2
+    </div>
+
+### CSS
+
+    @keyframes anime {
+        0% {
+            height: 0;
+        }
+        100% {
+            height: 120px;
+        }
+    }
+
+    .hover-box {
+        display: none;
+        flex-direction: column;
+        width: 100px;
+        height: 200px;
+        background-color: #bbb;
+        overflow: hidden;
+        animation: anime 1s forwards;
+    }
+
+    button {
+        all: unset;
+        cursor: pointer;
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    button:hover + .hover-box,
+    .hover-box:hover { // 👈 중요
+        display: flex;
+    }
+
+드롭다운 메뉴가 드롭다운 박스에 마우스가 위치할 때에도 보여지게 해주면 된다.
+
+React의 경우 상태 기반으로 드롭다운을 만드면 렌더링이 잦아진다.
+
+이 과정을 CSS로 바꿔주면 코드가 짧아질 수 있다.
