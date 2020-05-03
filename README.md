@@ -125,6 +125,74 @@
 
 크로스 브라우징을 해야 한다면 grid 대신 flex로 사용하는 것이 정신건강에 좋다.
 
+## flex like grid
+
+grid는 cross-browsing을 위해서라면 사용해선 안됩니다.
+
+그렇지만 grid layout을 사용해야할 경우가 생기게 됩니다.
+
+❗❗ grid처럼 완벽한 반응형 table을 만들 순 없습니다.
+
+**HTML**
+
+    <Bottom>
+        <Card>
+          <div className="area-box">A</div>
+          <div className="info-box">content</div>
+        </Card>
+        <Card>
+          <div className="area-box">B</div>
+          <div className="info-box">content</div>
+        </Card>
+        <Card>
+          <div className="area-box">C</div>
+          <div className="info-box">content</div>
+        </Card>
+        <Card>
+          <div className="area-box">D</div>
+          <div className="info-box">content</div>
+        </Card>
+        <Card>
+          <div className="area-box">E</div>
+          <div className="info-box">content</div>
+        </Card>
+    </Bottom>
+
+**SCSS**
+
+    const Bottom = styled.div`
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    `;
+
+    const Card = styled.div`
+        display: flex;
+        flex-direction: column;
+        flex: 1 2 300px;
+        border: 1px solid peru;
+        margin: 10px;
+
+    & .area-box {
+        width: 100%;
+        padding: 10px;
+        background-color: skyblue;
+    }
+    `;
+
+**Result**
+
+> ![image](https://user-images.githubusercontent.com/46839654/80899061-5e725600-8d46-11ea-842b-89ab3038ec70.png)
+
+이걸 grid로 바꾼다면 원하는 모양이 나옵니다.
+
+    const Bottom = styled.div`
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    `;
+
+> ![image](https://user-images.githubusercontent.com/46839654/80899085-a85b3c00-8d46-11ea-8a8f-47a9d81c013b.png)
+
 ---
 
 # 드롭다운 메뉴
