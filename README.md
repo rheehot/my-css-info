@@ -1,3 +1,19 @@
+- [기본 세팅](#%ea%b8%b0%eb%b3%b8-%ec%84%b8%ed%8c%85)
+- [색상](#%ec%83%89%ec%83%81)
+- [레이아웃](#%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83)
+  - [flex like grid](#flex-like-grid)
+- [드롭다운 메뉴](#%eb%93%9c%eb%a1%ad%eb%8b%a4%ec%9a%b4-%eb%a9%94%eb%89%b4)
+    - [HTML](#html)
+    - [CSS](#css)
+    - [HTML](#html-1)
+    - [CSS](#css-1)
+- [Skeleton UI](#skeleton-ui)
+  - [단점](#%eb%8b%a8%ec%a0%90)
+  - [설계](#%ec%84%a4%ea%b3%84)
+  - [결론](#%ea%b2%b0%eb%a1%a0)
+
+---
+
 # 기본 세팅
 
 1.  reset.css ( styled-components의 경우 styled-reset )
@@ -322,3 +338,139 @@ effect를 줘야하는 element에 animation을 줘야한다.
 React의 경우 상태 기반으로 드롭다운을 만드면 렌더링이 잦아진다.
 
 이 과정을 CSS로 바꿔주면 코드가 짧아질 수 있다.
+
+---
+
+# Skeleton UI
+
+요즘 **skeleton**이 매우 핫합니다.
+
+Loading Indicator를 보여주는 방법에는 여러가지가 있습니다.
+
+그 중 대중적인 두 가지를 살펴 보겠습니다.
+
+1. Loader
+   > ![1](https://user-images.githubusercontent.com/46839654/80949627-4e827100-8e2f-11ea-909a-01ccbd352bad.gif)
+2. Skeleton
+   > ![2](https://user-images.githubusercontent.com/46839654/80949981-01eb6580-8e30-11ea-8139-f750455a2941.gif)
+
+여러분은 두 가지 중에 어떤게 마음에 드시나요?
+
+제가 속마음을 읽어보면 두 번째를 고르신 것 같습니다.
+
+## 단점
+
+이제 **Skeleton UI**를 설계하기 위해서는 조금 복잡해집니다.
+
+**Loader**를 사용할 때에는 api로부터 받은 data가 존재하는지 확인하고 조건에 따라 내보내면 되었지만,
+
+**Skeleton**을 사용할 경우에는 복합적으로 만들어야 합니다.
+
+그러면 이제 만들어 보겠습니다.
+
+## 설계
+
+❗❗ **API에 대한 상세한 설명은 없음**
+
+- Home Component
+
+  >     const Home: React.FunctionComponent = () => {
+  >       const { data } = useQuery<{ rooms: Array<_Query> }>(ROOMS);
+  >       <Bottom>
+  >         {!data ? (
+  >         // * data가 존재하지 않으면 스켈레톤 보여줌
+  >         <>
+  >            {new Array(9).fill(1).map((_, index) => (
+  >             <HomeSkeleton key={index} />
+  >             ))}
+  >         </>
+  >         ) : null}
+  >         {data?.rooms.map((item) => (
+  >             // * data를 불러오면 mapping으로 뿌려줌
+  >             <Card key={item.id}>
+  >                 <CardLink to={`/room/${item.id}`}>
+  >                     <div className="area-box">{item.area}</div>
+  >                     <div className="info-box">
+  >                         <span className="title">{item.title}</span>
+  >                         {item.summary ? (
+  >                         // * summary가 존재하면 보여주고 아니면 생략
+  >                         <span className="summary">{item.summary}</span>
+  >                         ) : null}
+  >                         <span className="count">5명</span>
+  >                     </div>
+  >                 </CardLink>
+  >             </Card>
+  >         ))}
+  >         </Bottom>
+  >     }
+
+- Skeleton (JSX)
+
+  >     const HomeSkeleton: React.FunctionComponent = () => (
+  >         <Card>
+  >             <div className="area-box">
+  >                 <div className="top skeleton"></div>
+  >             </div>
+  >             <div className="info-box">
+  >                 <div className="info-1 skeleton"></div>
+  >                 <div className="info-2 skeleton"></div>
+  >                 <div className="info-3 skeleton"></div>
+  >             </div>
+  >         </Card>
+  >     );
+
+- Skeleton (SCSS)
+
+  >     const Card = styled.div`
+  >         display: flex;
+  >         flex-direction: column;
+  >
+  >         & .skeleton {
+  >             background-color: ${(props) => props.theme.bgColor.skeleton};
+  >             border-radius: 5px;
+  >         }
+  >
+  >         & .area-box {
+  >             width: 100%;
+  >             padding: 0 10px;
+  >             & .top {
+  >                 width: 100%;
+  >                 height: 36px;
+  >             }
+  >         }
+  >
+  >         & .info-box {
+  >             display: flex;
+  >             flex-direction: column;
+  >             padding: 10px;
+  >
+  >             & .info-1 {
+  >                 width: 100%;
+  >                 height: 16px;
+  >                 margin-bottom: 10px;
+  >             }
+  >             & .info-2 {
+  >                 width: 70%;
+  >                 height: 14px;
+  >                 margin-bottom: 10px;
+  >             }
+  >             & .info-3 {
+  >                 width: 10%;
+  >                 height: 14px;
+  >             }
+  >         }
+  >     `;
+
+## 결론
+
+위와 같이 작업하면 다음과 같이 적용됩니다.
+
+> ![2](https://user-images.githubusercontent.com/46839654/80949981-01eb6580-8e30-11ea-8139-f750455a2941.gif)
+
+분명 **Loading Indicator**를 활용하는 것보다 매우 복잡합니다.
+
+하지만 생각보다 괜찮은 효과를 줄 수 있습니다.
+
+pure css로 만들기 힘드시면 **react-loading-skeleton**이라는 패키지가 있습니다.
+
+직접 사용해보니 커스터마이징이 힘들어서 필자는 위와 같이 직접 만들어 사용합니다.
