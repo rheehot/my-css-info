@@ -11,6 +11,10 @@
   - [단점](#%eb%8b%a8%ec%a0%90)
   - [설계](#%ec%84%a4%ea%b3%84)
   - [결론](#%ea%b2%b0%eb%a1%a0)
+- [Autoresize Textarea](#autoresize-textarea)
+  - [JSX](#jsx)
+  - [CSS](#css-2)
+  - [JS](#js)
 
 ---
 
@@ -474,3 +478,65 @@ Loading Indicator를 보여주는 방법에는 여러가지가 있습니다.
 pure css로 만들기 힘드시면 **react-loading-skeleton**이라는 패키지가 있습니다.
 
 직접 사용해보니 커스터마이징이 힘들어서 필자는 위와 같이 직접 만들어 사용합니다.
+
+---
+
+# Autoresize Textarea
+
+![2](https://user-images.githubusercontent.com/46839654/82009665-e6435300-96aa-11ea-85d7-c6b60aeda199.gif)
+
+textarea tag를 사용할 때 `react-autosize-textarea` 패키지를 사용하면 간편하게 만들 수 있긴 합니다만
+
+직접 만들어 사용하는 것을 선호하므로 CSS + JS로 만들어 보겠습니다.
+
+## JSX
+
+    const Name: React.FunctionComponent = () => {
+        const [description, setDescription] = useState<string>("");
+        return (
+            <Description>
+                <span className="title">설명을 입력해주세요.</span>
+                <textarea
+                    id="description"
+                    placeholder="내용 입력"
+                    value={description}
+                    onChange={textareaOnChange} >> value가 변경되어질 때마다 실행
+                ></textarea>
+            </Description>
+        )
+    }
+
+## CSS
+
+    const Description = styled.div`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .title {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        & textarea {
+            all: unset;
+            width: 75%;
+            height: 30px;
+            line-height: 20px; ❗
+            resize: none; ❗
+            overflow: hidden; ❗
+            border-bottom: 1px solid #bbb;
+        }
+    `;
+
+## JS
+
+❗❗ **Typescript로 작성되었습니다.**
+
+✅ **Javascript로 개발하는 경우 `React.SynthicEvent~~`를 제거하고 `currentTarget --> target`으로 변경해야 합니다.**
+
+    const textareaOnChange = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
+        const { currentTarget } = event; ❗ event에서 target 추출
+        setDescription(currentTarget.value); ❗ value 교체
+        currentTarget.style.height = "1px";
+        currentTarget.style.height = `${currentTarget.scrollHeight + 12}px`;
+    };
