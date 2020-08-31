@@ -1,16 +1,17 @@
-- [기본 세팅](#%ea%b8%b0%eb%b3%b8-%ec%84%b8%ed%8c%85)
-- [색상](#%ec%83%89%ec%83%81)
-- [레이아웃](#%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83)
+- [기본 세팅](#기본-세팅)
+- [색상](#색상)
+- [반응형](#반응형)
+- [레이아웃](#레이아웃)
   - [flex like grid](#flex-like-grid)
-- [드롭다운 메뉴](#%eb%93%9c%eb%a1%ad%eb%8b%a4%ec%9a%b4-%eb%a9%94%eb%89%b4)
+- [드롭다운 메뉴](#드롭다운-메뉴)
     - [HTML](#html)
     - [CSS](#css)
     - [HTML](#html-1)
     - [CSS](#css-1)
 - [Skeleton UI](#skeleton-ui)
-  - [단점](#%eb%8b%a8%ec%a0%90)
-  - [설계](#%ec%84%a4%ea%b3%84)
-  - [결론](#%ea%b2%b0%eb%a1%a0)
+  - [단점](#단점)
+  - [설계](#설계)
+  - [결론](#결론)
 - [Autoresize Textarea](#autoresize-textarea)
   - [JSX](#jsx)
   - [CSS](#css-2)
@@ -67,6 +68,67 @@
    > [여기](https://color.adobe.com/ko/create/color-wheel/)에서 **유사**, **단색**, **보색**, **혼합**, **음영** 등을 기준 색에 맞춰 확인할 수 있다.
 
 4. gradient는 [여기](https://uigradients.com/#Firewatch)에서 색상을 가져와보자.
+
+---
+
+# 반응형
+
+아래처럼 홈페이지가 가로/세로 모두 100%을 사용하는 레이아웃이 아니라고 가정을 해봅니다.
+
+![image](https://user-images.githubusercontent.com/46839654/91678279-1f330500-eb80-11ea-82fc-18743a4390b4.png)
+
+그런데 여기에 모바일까지 지원을 해야한다면 어떻게 할까요?
+
+![image](https://user-images.githubusercontent.com/46839654/91678444-8bae0400-eb80-11ea-9390-b0e65682ff8f.png)
+
+먼저, 컨텐츠를 가운데로 정렬시키는 방법은 두 가지가 있습니다.
+
+1. margin: 0 auto;
+
+        <style>
+            header {
+                width: 100%;
+                border-bottom: 1px solid #bbb;
+            }
+            .box {
+                width: 100%;
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+        </style>
+
+        <body>
+            <header>
+                <div class="box">1</div>
+            </header>
+        </body>
+    > ![image](https://user-images.githubusercontent.com/46839654/91678914-c6fd0280-eb81-11ea-904d-b8051a119f52.png)
+
+2. flex
+
+        <style>
+            header {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .box {
+                width: 100%;
+                max-width: 1000px;
+            }
+        </style>
+
+        <body>
+            <header>
+                <div class="box">1</div>
+            </header>
+        </body>
+
+    > ![image](https://user-images.githubusercontent.com/46839654/91678860-a634ad00-eb81-11ea-895b-c0ee42330e1b.png)
+
+두 방법 모두 모바일에 맞춰서 변화합니다.
+
+![image](https://user-images.githubusercontent.com/46839654/91678960-e8f68500-eb81-11ea-83c9-ae32ef21f38e.png)
 
 ---
 
